@@ -61,6 +61,9 @@
 #undef USE_RTC_TIME
 #undef USE_RX_MSP
 #undef USE_ESC_SENSOR_INFO
+#if defined(IRCSYNERGYF3)
+#undef USE_LED_STRIP
+#endif
 
 #if defined(IRCSYNERGYF3)
 #undef USE_LED_STRIP
