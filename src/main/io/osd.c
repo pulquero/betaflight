@@ -200,7 +200,8 @@ static const uint8_t osdElementDisplayOrder[] = {
     OSD_NUMERICAL_HEADING,
     OSD_NUMERICAL_VARIO,
     OSD_COMPASS_BAR,
-    OSD_ANTI_GRAVITY
+    OSD_ANTI_GRAVITY,
+    OSD_LINK_QUALITY
 };
 
 PG_REGISTER_WITH_RESET_FN(osdConfig_t, osdConfig, PG_OSD_CONFIG, 3);
@@ -467,6 +468,17 @@ static bool osdDrawSingleElement(uint8_t item)
                 osdRssi = 99;
 
             tfp_sprintf(buff, "%c%2d", SYM_RSSI, osdRssi);
+            break;
+        }
+
+    case OSD_LINK_QUALITY:
+        {
+            // change range to 0-9
+            uint8_t osdLinkQuality = rxGetLinkQuality() * 10 / LINK_QUALITY_MAX_VALUE;
+            if (osdLinkQuality >= 10)
+                osdLinkQuality = 9;
+
+            tfp_sprintf(buff, "%1d", osdLinkQuality);
             break;
         }
 
