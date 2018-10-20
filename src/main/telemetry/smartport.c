@@ -141,11 +141,13 @@ enum
     FSSP_DATAID_TEMP7      = 0x0B77 ,
     FSSP_DATAID_TEMP8      = 0x0B78 ,
     FSSP_DATAID_A3         = 0x0900 ,
-    FSSP_DATAID_A4         = 0x0910
+    FSSP_DATAID_A4         = 0x0910 ,
+    FSSF_DATAID_DIY_PITCH  = 0x5100 ,
+    FSSF_DATAID_DIY_ROLL   = 0x5101
 };
 
 // if adding more sensors then increase this value
-#define MAX_DATAIDS 17
+#define MAX_DATAIDS 19
 
 static uint16_t frSkyDataIdTable[MAX_DATAIDS];
 
@@ -805,6 +807,14 @@ void processSmartPortTelemetry(smartPortPayload_t *payload, volatile bool *clear
                 cellCount = getBatteryCellCount();
                 vfasVoltage = cellCount ? (getBatteryVoltage() * 10 / cellCount) : 0; // given in 0.1V, convert to volts
                 smartPortSendPackage(id, vfasVoltage);
+                *clearToSend = false;
+                break;
+            case FSSF_DATAID_DIY_PITCH   :
+                smartPortSendPackage(id, attitude.values.pitch * 10); // given in 10*deg, requested in 10000 = 100 deg
+                *clearToSend = false;
+                break;
+            case FSSF_DATAID_DIY_ROLL   :
+                smartPortSendPackage(id, attitude.values.roll * 10); // given in 10*deg, requested in 10000 = 100 deg
                 *clearToSend = false;
                 break;
             default:
