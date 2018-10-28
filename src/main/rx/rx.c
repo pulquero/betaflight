@@ -717,6 +717,11 @@ uint8_t rxGetLinkQuality(void)
 {
     return linkQuality;
 }
+
+uint8_t rxGetLinkQualityPercent(void)
+{
+    return scaleRange(rxGetLinkQuality(), 0, LINK_QUALITY_MAX_VALUE, 0, 100);
+}
 #endif
 
 uint16_t rxGetRefreshRate(void)

@@ -135,6 +135,7 @@ typedef struct statistic_s {
     int16_t min_rssi;
     int32_t max_altitude;
     int16_t max_distance;
+    int16_t min_link_quality;
 } statistic_t;
 
 static statistic_t stats;
@@ -1264,6 +1265,7 @@ static void osdResetStats(void)
     stats.min_rssi     = 99;
     stats.max_altitude = 0;
     stats.max_distance = 0;
+    stats.min_link_quality = 9;
     stats.armed_time   = 0;
 }
 
@@ -1297,6 +1299,11 @@ static void osdUpdateStats(void)
     value = getRssiPercent();
     if (stats.min_rssi > value) {
         stats.min_rssi = value;
+    }
+
+    value = getLinkQualityPercent();
+    if (stats.min_link_quality > value) {
+        stats.min_link_quality = value;
     }
 
     int altitude = getEstimatedAltitude();
@@ -1471,6 +1478,11 @@ static void osdShowStats(uint16_t endBatteryVoltage)
     }
 #endif
 
+    if (osdStatGetState(OSD_STAT_MIN_LINK_QUALITY)) {
+        itoa(stats.min_link_quality, buff, 10);
+        strcat(buff, "%");
+        osdDisplayStatisticLabel(top++, "MIN LINK", buff);
+    }
 }
 
 static void osdShowArmed(void)

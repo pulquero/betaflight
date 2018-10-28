@@ -171,6 +171,7 @@ bool isRssiConfigured(void);
 #define LINK_QUALITY_MAX_VALUE 255
 
 uint8_t rxGetLinkQuality(void);
+uint8_t rxGetLinkQualityPercent(void);
 
 void resetAllRxChannelRangeConfigurations(rxChannelRangeConfig_t *rxChannelRangeConfig);
 
